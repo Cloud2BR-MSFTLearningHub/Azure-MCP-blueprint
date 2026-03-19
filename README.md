@@ -11,6 +11,15 @@ Last updated: 2026-03-09
 
 > MCP is about `structured behavior, access control, and responsibilities` from the AI's perspective, and we expose it (often via HTTP) using whatever hosting option fits best.
 
+
+<details>
+<summary><strong>List of References</strong></summary>
+
+- [Tutorial: Host an MCP server on Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-mcp-tutorial?tabs=mcp-extension&pivots=programming-language-python#remote-mcp-server-authorization)
+- [Remote HTTP MCP Server with authentication enabled fails to acquire token from OIDC IDP (Entra)](https://github.com/microsoft/vscode/issues/278875)
+
+</details>
+
 <details>
 <summary><strong>Table of contents</strong></summary>
 
