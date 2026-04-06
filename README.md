@@ -10,7 +10,6 @@ Last updated: 2026-03-09
 
 > MCP is about `structured behavior, access control, and responsibilities` from the AI's perspective, and we expose it (often via HTTP) using whatever hosting option fits best.
 
-
 <details>
 <summary><strong>List of References</strong></summary>
 
