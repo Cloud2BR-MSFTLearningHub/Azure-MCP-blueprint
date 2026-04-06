@@ -37,8 +37,7 @@ EXCLUDED_DIR_NAMES = {
 
 HEADER_BLOCK = (
     "Costa Rica\n\n"
-    "[![GitHub](https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff)](https://github.com/)\n"
-    "[brown9804](https://github.com/brown9804)\n\n"
+    "[![GitHub](https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff)](https://github.com/) [Cloud2BR OSS - Learning Hub](https://github.com/Cloud2BR-MSFTLearningHub)\n\n"
     f"Last updated: {TODAY}\n\n"
     "----------\n"
 )
