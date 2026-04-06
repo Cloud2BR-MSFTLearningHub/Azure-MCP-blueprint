@@ -571,7 +571,7 @@ kv_client.set_secret("MCP-Endpoint", "https://your-mcp.azurecontainerapps.io")
 
 <!-- START BADGE -->
 <div align="center">
-  <img src="https://img.shields.io/badge/Total%20views-72-limegreen" alt="Total views">
-  <p>Refresh Date: 2026-03-09</p>
+  <img src="https://img.shields.io/badge/Total%20views-1283-limegreen" alt="Total views">
+  <p>Refresh Date: 2026-04-06</p>
 </div>
 <!-- END BADGE -->
