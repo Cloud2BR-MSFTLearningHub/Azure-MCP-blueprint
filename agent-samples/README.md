@@ -1,43 +1,36 @@
 # Pre-Built AI Agent Samples
 
-Costa Rica
-
-[![GitHub](https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff)](https://github.com/) [Cloud2BR OSS - Learning Hub](https://github.com/Cloud2BR-MSFTLearningHub)
-
-Last updated: 2026-03-06
-
-----------
 > Reference AI agent samples that use this repo's MCP Server over HTTP.
 
-<details>
+<details markdown="1">
 <summary><strong>List of References</strong></summary>
 
-- [Blueprint Overview](../README.md)
-- [Deployment & Configuration](../docs/deployment-and-configuration.md)
+- [Blueprint Overview](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/)
+- [Deployment & Configuration](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/deployment-and-configuration/)
 - Integration guides:
-  - [Azure AI Foundry](../docs/integration-guides/azure-ai-foundry-integration.md)
-  - [Microsoft Copilot Studio](../docs/integration-guides/copilot-studio-integration.md)
-  - [Custom App](../docs/integration-guides/custom-app-integration.md)
-- [MCP HTTP Client (Sample)](../samples/mcp-http-client/)
+  - [Azure AI Foundry](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/integration-guides/azure-ai-foundry-integration/)
+  - [Microsoft Copilot Studio](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/integration-guides/copilot-studio-integration/)
+  - [Custom App](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/integration-guides/custom-app-integration/)
+- [MCP HTTP Client (Sample)](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/samples/mcp-http-client)
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Table of Content</strong></summary>
 
 | Sample | Industry | Agents | Complexity |
 |--------|----------|---------|------------|
-| [Healthcare Multi-Agent](./healthcare-multi-agent/) | Healthcare | 5 | Advanced |
-| [Simple Query Agent](./simple-query-agent/) | Any | 1 | Beginner |
-| [Retail Shopping Assistant](./retail-shopping-assistant/) | Retail | 6 | Intermediate |
-| [Financial Advisor](./financial-advisor/) | Finance | 4 | Intermediate |
-| [Manufacturing Monitor](./manufacturing-monitor/) | Manufacturing | 3 | Intermediate |
-| [Education Student Assistant](./education-student-assistant/) | Education | 3 | Intermediate |
-| [Logistics Tracker](./logistics-tracker/) | Logistics | 3 | Intermediate |
-| [Insurance Claims Agent](./insurance-claims-agent/) | Insurance | 4 | Intermediate |
-| [Hospitality Concierge](./hospitality-concierge/) | Hospitality | 3 | Intermediate |
-| [Energy Usage Advisor](./energy-usage-advisor/) | Energy | 3 | Intermediate |
-| [Real Estate Portfolio Manager](./realestate-portfolio-manager/) | Real Estate | 3 | Intermediate |
+| [Healthcare Multi-Agent](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/healthcare-multi-agent) | Healthcare | 5 | Advanced |
+| [Simple Query Agent](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/simple-query-agent) | Any | 1 | Beginner |
+| [Retail Shopping Assistant](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/retail-shopping-assistant) | Retail | 6 | Intermediate |
+| [Financial Advisor](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/financial-advisor) | Finance | 4 | Intermediate |
+| [Manufacturing Monitor](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/manufacturing-monitor) | Manufacturing | 3 | Intermediate |
+| [Education Student Assistant](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/education-student-assistant) | Education | 3 | Intermediate |
+| [Logistics Tracker](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/logistics-tracker) | Logistics | 3 | Intermediate |
+| [Insurance Claims Agent](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/insurance-claims-agent) | Insurance | 4 | Intermediate |
+| [Hospitality Concierge](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/hospitality-concierge) | Hospitality | 3 | Intermediate |
+| [Energy Usage Advisor](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/energy-usage-advisor) | Energy | 3 | Intermediate |
+| [Real Estate Portfolio Manager](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/realestate-portfolio-manager) | Real Estate | 3 | Intermediate |
 
 - `healthcare-multi-agent`: an advanced orchestrated multi-agent sample.
 - The other industry samples: lightweight CLIs that (a) route to a role and (b) run a search tool via MCP, optionally using `openai_chat_completion` for routing and summaries when available.
@@ -53,7 +46,7 @@ Last updated: 2026-03-06
 
 > Patterns: <br/>
 >
-> - Lightweight HTTP samples (most folders): 
+> - Lightweight HTTP samples (most folders):
 >
   ```
   User
@@ -79,13 +72,6 @@ Last updated: 2026-03-06
 ## Next Steps
 
 - Explore individual sample READMEs
-- [Custom App Integration](../docs/integration-guides/custom-app-integration.md)
-- [Azure AI Foundry Integration](../docs/integration-guides/azure-ai-foundry-integration.md)
-- [Copilot Studio Integration](../docs/integration-guides/copilot-studio-integration.md)
-
-<!-- START BADGE -->
-<div align="center">
-  <img src="https://img.shields.io/badge/Total%20views-1283-limegreen" alt="Total views">
-  <p>Refresh Date: 2026-04-06</p>
-</div>
-<!-- END BADGE -->
+- [Custom App Integration](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/integration-guides/custom-app-integration/)
+- [Azure AI Foundry Integration](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/integration-guides/azure-ai-foundry-integration/)
+- [Copilot Studio Integration](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/integration-guides/copilot-studio-integration/)

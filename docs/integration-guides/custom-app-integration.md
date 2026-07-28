@@ -1,15 +1,8 @@
 # Custom Application Integration <br/> with MCP Server - Overview
 
-Costa Rica
-
-[![GitHub](https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff)](https://github.com/) [Cloud2BR OSS - Learning Hub](https://github.com/Cloud2BR-MSFTLearningHub)
-
-Last updated: 2026-03-09
-
-----------
 > This guide shows developers how to integrate the Azure MCP Server into custom applications using the MCP SDK. Perfect for building AI-powered applications with direct MCP tool access.
 
-<details>
+<details markdown="1">
 <summary><strong>Table of contents</strong></summary>
 
 - [Prerequisites](#prerequisites)
@@ -30,7 +23,7 @@ Last updated: 2026-03-09
 
 ## Quick Start (Python)
 
-<details>
+<details markdown="1">
 <summary><strong>1. Install MCP SDK</strong></summary>
 
 ```bash
@@ -39,7 +32,7 @@ pip install mcp anthropic
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>2. Basic MCP Client</strong></summary>
 
 ```python
@@ -52,7 +45,7 @@ class MCPClient:
     def __init__(self, mcp_endpoint: str, api_key: str = None):
         """
         Initialize MCP client
-        
+
         Args:
             mcp_endpoint: Your MCP server URL (e.g., https://your-mcp.azurecontainerapps.io)
             api_key: Optional API key for authentication
@@ -60,7 +53,7 @@ class MCPClient:
         self.endpoint = mcp_endpoint
         self.headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
         self.client = httpx.AsyncClient()
-    
+
     async def list_tools(self):
         """Get all available MCP tools"""
         response = await self.client.get(
@@ -68,15 +61,15 @@ class MCPClient:
             headers=self.headers
         )
         return response.json()
-    
+
     async def call_tool(self, tool_name: str, arguments: dict):
         """
         Execute an MCP tool
-        
+
         Args:
             tool_name: Name of the tool (e.g., 'cosmos_query_items')
             arguments: Tool-specific parameters
-        
+
         Returns:
             Tool execution result
         """
@@ -86,7 +79,7 @@ class MCPClient:
             headers=self.headers
         )
         return response.json()
-    
+
     async def health_check(self):
         """Check MCP server health"""
         response = await self.client.get(
@@ -101,15 +94,15 @@ async def main():
     mcp = MCPClient(
         mcp_endpoint="https://your-mcp.azurecontainerapps.io"
     )
-    
+
     # Check server health
     health = await mcp.health_check()
     print(f"Server Status: {health}")
-    
+
     # List available tools
     tools = await mcp.list_tools()
     print(f"Available Tools: {[t['name'] for t in tools['tools']]}")
-    
+
     # Example: Query Cosmos DB
     result = await mcp.call_tool(
         tool_name="cosmos_query_items",
@@ -118,7 +111,7 @@ async def main():
         }
     )
     print(f"Query Results: {result}")
-    
+
     # Example: AI Search
     search_result = await mcp.call_tool(
         tool_name="search_documents",
@@ -137,7 +130,7 @@ if __name__ == "__main__":
 
 ## Advanced Integration Examples
 
-<details>
+<details markdown="1">
 <summary><strong>Building a Custom AI Agent</strong></summary>
 
 ```python
@@ -147,27 +140,27 @@ from mcp_client import MCPClient
 
 class CustomAIAgent:
     """AI Agent with MCP tool access"""
-    
+
     def __init__(self, mcp_endpoint: str, anthropic_api_key: str):
         self.mcp = MCPClient(mcp_endpoint)
         self.claude = Anthropic(api_key=anthropic_api_key)
-    
+
     async def process_query(self, user_query: str):
         """
         Process user query with AI + MCP tools
-        
+
         Args:
             user_query: Natural language user request
-        
+
         Returns:
             AI response with tool results
         """
         # Get available tools
         tools = await self.mcp.list_tools()
-        
+
         # Convert MCP tools to Claude format
         claude_tools = self._convert_to_claude_tools(tools)
-        
+
         # Initial AI request
         response = self.claude.messages.create(
             model="claude-3-5-sonnet-20241022",
@@ -177,11 +170,11 @@ class CustomAIAgent:
                 {"role": "user", "content": user_query}
             ]
         )
-        
+
         # Handle tool calls
         while response.stop_reason == "tool_use":
             tool_calls = [block for block in response.content if block.type == "tool_use"]
-            
+
             # Execute MCP tools
             tool_results = []
             for tool_call in tool_calls:
@@ -194,7 +187,7 @@ class CustomAIAgent:
                     "tool_use_id": tool_call.id,
                     "content": str(result)
                 })
-            
+
             # Continue conversation with tool results
             response = self.claude.messages.create(
                 model="claude-3-5-sonnet-20241022",
@@ -206,9 +199,9 @@ class CustomAIAgent:
                     {"role": "user", "content": tool_results}
                 ]
             )
-        
+
         return response.content[0].text
-    
+
     def _convert_to_claude_tools(self, mcp_tools):
         """Convert MCP tool schema to Claude format"""
         return [
@@ -226,7 +219,7 @@ async def run_agent():
         mcp_endpoint="https://your-mcp.azurecontainerapps.io",
         anthropic_api_key=os.getenv("ANTHROPIC_API_KEY")
     )
-    
+
     # Healthcare example
     response = await agent.process_query(
         "Find all diabetic patients with recent lab results and summarize their status"
@@ -238,7 +231,7 @@ asyncio.run(run_agent())
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Flask/FastAPI Integration</strong></summary>
 
 ```python
@@ -262,7 +255,7 @@ class QueryRequest(BaseModel):
 async def execute_query(request: QueryRequest):
     """
     Execute MCP tool via REST API
-    
+
     Example:
         POST /api/query
         {
@@ -299,7 +292,7 @@ async def health():
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Node.js/TypeScript Integration</strong></summary>
 
 ```typescript
@@ -363,7 +356,7 @@ main();
 
 ## Authentication Options
 
-<details>
+<details markdown="1">
 <summary><strong>1. Azure Managed Identity (Recommended)</strong></summary>
 
 ```python
@@ -378,7 +371,7 @@ class SecureMCPClient(MCPClient):
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>2. API Key Authentication</strong></summary>
 
 ```python
@@ -394,7 +387,7 @@ mcp = MCPClient(
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>3. OAuth 2.0 Flow</strong></summary>
 
 ```python
@@ -439,7 +432,7 @@ async def robust_tool_call(mcp: MCPClient, tool_name: str, args: dict, retries=3
             if attempt == retries - 1:
                 raise
             await asyncio.sleep(1)
-    
+
     raise Exception(f"Failed after {retries} attempts")
 ```
 
@@ -453,16 +446,9 @@ async def robust_tool_call(mcp: MCPClient, tool_name: str, args: dict, retries=3
 
 ## Sample Applications
 
-> See [`/agent-samples`](../../agent-samples) directory for complete examples:
+> See [`/agent-samples`](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples) directory for complete examples:
 >
 > - Healthcare Patient Assistant
 > - Retail Product Recommendation Engine
 > - Financial Transaction Monitor
 > - Manufacturing Equipment Diagnostics
-
-<!-- START BADGE -->
-<div align="center">
-  <img src="https://img.shields.io/badge/Total%20views-1283-limegreen" alt="Total views">
-  <p>Refresh Date: 2026-04-06</p>
-</div>
-<!-- END BADGE -->

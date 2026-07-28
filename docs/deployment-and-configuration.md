@@ -1,15 +1,8 @@
 # MCP Blueprint (Azure) <br/> Deployment & Configuration Best Practices - Overview
 
-Costa Rica
-
-[![GitHub](https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff)](https://github.com/) [Cloud2BR OSS - Learning Hub](https://github.com/Cloud2BR-MSFTLearningHub)
-
-Last updated: 2026-03-09
-
-----------
 > This blueprint supports running the MCP server in multiple ways.
 
-<details>
+<details markdown="1">
 <summary><strong>Table of contents</strong></summary>
 
 - [What this repo deploys](#what-this-repo-deploys)
@@ -17,7 +10,7 @@ Last updated: 2026-03-09
 - [Secrets best practices](#secrets-best-practices)
 - [Observability best practices](#observability-best-practices)
 - [Deployment options](#deployment-options)
-- [Data modeling & Cosmos DB best practices (when using Cosmos)](#data-modeling--cosmos-db-best-practices-when-using-cosmos)
+- [Data modeling & Cosmos DB best practices (when using Cosmos)](#data-modeling-cosmos-db-best-practices-when-using-cosmos)
 - [Validation](#validation)
 - [Common pitfalls (and how this blueprint avoids them)](#common-pitfalls-and-how-this-blueprint-avoids-them)
 
@@ -25,14 +18,14 @@ Last updated: 2026-03-09
 
 ## What this repo deploys
 
-- **MCP Server**: [src/mcp-server/main.py](../src/mcp-server/main.py) (FastAPI + HTTP transport)
-- **Industry templates**: [industry-templates/](../industry-templates/) (Cosmos DB + Search index names/schemas)
-- **Provisioning (recommended)**: [terraform-infrastructure/](../terraform-infrastructure/) (Azure resources + Key Vault + optional “zero-touch” Container Apps deploy)
-- **Optional scripts**: [scripts/](../scripts/) (deploy/validate/sample data)
+- **MCP Server**: [src/mcp-server/main.py](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/blob/main/src/mcp-server/main.py) (FastAPI + HTTP transport)
+- **Industry templates**: [industry-templates/](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/industry-templates) (Cosmos DB + Search index names/schemas)
+- **Provisioning (recommended)**: [terraform-infrastructure/](terraform.md) (Azure resources + Key Vault + optional “zero-touch” Container Apps deploy)
+- **Optional scripts**: [scripts/](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/scripts) (deploy/validate/sample data)
 
 ## Standard configuration contract (env vars)
 
-<details>
+<details markdown="1">
 <summary><strong>Required (any deployment)</strong></summary>
 
 - `PORT`
@@ -41,7 +34,7 @@ Last updated: 2026-03-09
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Data + Search (when enabled)</strong></summary>
 
 - `COSMOS_ENDPOINT`
@@ -59,7 +52,7 @@ Last updated: 2026-03-09
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Microsoft Foundry (Azure AI Foundry) (when enabled)</strong></summary>
 
 > This repo treats **Foundry** (Azure AI Foundry) as the **model endpoint**.
@@ -73,7 +66,7 @@ Last updated: 2026-03-09
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Common</strong></summary>
 
 - `AZURE_KEY_VAULT_URI` (recommended in Azure)
@@ -103,12 +96,12 @@ Last updated: 2026-03-09
 
 ## Deployment options
 
-<details>
+<details markdown="1">
 <summary><strong>Option A (recommended): Terraform + Azure Container Apps (zero-touch)</strong></summary>
 
 > This is the only path in this repo that is currently **end-to-end automated** via Terraform.
 
-1. Configure [terraform-infrastructure/terraform.tfvars](../terraform-infrastructure/terraform.tfvars)
+1. Configure [terraform-infrastructure/terraform.tfvars](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/blob/main/terraform-infrastructure/terraform.tfvars)
    - `selected_industry`
    - `mcp_deployment_type = "container-app"`
 2. Deploy:
@@ -117,14 +110,13 @@ Last updated: 2026-03-09
    - `terraform init`
    - `terraform apply -auto-approve`
 
->[!NOTE]
->
-> - The container image is built in Azure using **ACR Tasks** (`az acr build`).
-> - The Container App is configured with Key Vault-backed secrets.
+!!! note
+  - The container image is built in Azure using **ACR Tasks** (`az acr build`).
+  - The Container App is configured with Key Vault-backed secrets.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Option B: Terraform provisions infra, then deploy code separately (Functions)</strong></summary>
 
 > Terraform can provision the Function App + Key Vault + dependent services, but code deployment is best done via CI/CD (or your preferred release process).
@@ -136,7 +128,7 @@ Last updated: 2026-03-09
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Option C: Terraform provisions infra, then deploy code separately (App Service)</strong></summary>
 
 - Set `mcp_deployment_type = "app-service"` in `terraform.tfvars`.
@@ -163,18 +155,11 @@ Last updated: 2026-03-09
   - `GET /mcp/prompts`
   - `POST /mcp/execute`
 
-> [!TIP]
-> You can also run the built-in validator: [scripts/validate-mcp.py](../scripts/validate-mcp.py)
+!!! tip
+    You can also run the built-in validator: [scripts/validate-mcp.py](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/blob/main/scripts/validate-mcp.py)
 
 ## Common pitfalls (and how this blueprint avoids them)
 
 - **Hard-coded Cosmos/Search names** → Terraform + server now read these from the selected industry template and env vars.
 - **Key vs Managed Identity mismatch** → server supports both, based on presence of key env vars.
 - **"Supports Functions/App Service" but breaks at apply time** → Terraform automation is scoped to Container Apps; other options are provision-only unless you add a deployment pipeline.
-
-<!-- START BADGE -->
-<div align="center">
-  <img src="https://img.shields.io/badge/Total%20views-1283-limegreen" alt="Total views">
-  <p>Refresh Date: 2026-04-06</p>
-</div>
-<!-- END BADGE -->

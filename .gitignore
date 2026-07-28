@@ -69,6 +69,7 @@ build/
 # Generated data
 generated-data/
 sample-data-*.json
+site/
 
 # IDE
 .vscode/

@@ -1,16 +1,8 @@
-# Azure AI Foundry Integration <br/> with MCP Server - Overview 
-
-Costa Rica
-
-[![GitHub](https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff)](https://github.com/) [Cloud2BR OSS - Learning Hub](https://github.com/Cloud2BR-MSFTLearningHub)
-
-Last updated: 2026-03-09
-
-----------
+# Azure AI Foundry Integration <br/> with MCP Server - Overview
 
 > This guide demonstrates how to integrate your MCP Server with Azure AI Foundry to build sophisticated multi-agent AI applications. Includes model routing, agent orchestration, and agentic workflows.
 
-<details>
+<details markdown="1">
 <summary><strong>Table of contents</strong></summary>
 
 - [Architecture Pattern](#architecture-pattern)
@@ -47,7 +39,7 @@ User Request → Intent Router → Specialized Agents → MCP Tools → Azure Se
 
 ## Quick Start
 
-<details>
+<details markdown="1">
 <summary><strong>1. Install Azure AI SDK</strong></summary>
 
 ```bash
@@ -56,7 +48,7 @@ pip install azure-ai-projects azure-ai-agents azure-identity
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>2. Create Multi-Agent System</strong></summary>
 
 ```python
@@ -70,7 +62,7 @@ class MCPMultiAgentOrchestrator:
     Multi-agent orchestrator with MCP server integration
     Based on Agent-to-Agent (A2A) protocol pattern
     """
-    
+
     def __init__(
         self,
         project_endpoint: str,
@@ -80,7 +72,7 @@ class MCPMultiAgentOrchestrator:
         project_name: str
     ):
         self.credential = DefaultAzureCredential()
-        
+
         # Initialize AI Foundry client
         self.ai_client = AIProjectClient(
             credential=self.credential,
@@ -88,11 +80,11 @@ class MCPMultiAgentOrchestrator:
             resource_group_name=resource_group,
             project_name=project_name
         )
-        
+
         self.mcp_endpoint = mcp_endpoint
         self.agents = {}
         self.runtime = AgentRuntime(client=self.ai_client)
-    
+
     def create_agent(
         self,
         name: str,
@@ -103,14 +95,14 @@ class MCPMultiAgentOrchestrator:
     ) -> str:
         """
         Create specialized agent with MCP tool access
-        
+
         Args:
             name: Agent identifier
             role: Agent's domain (e.g., "Healthcare Specialist", "Inventory Manager")
             instructions: System instructions for the agent
             mcp_tools: List of MCP tool names this agent can use
             model: Model deployment name in Azure AI Foundry (OpenAI-compatible)
-        
+
         Returns:
             Agent ID (asst_*)
         """
@@ -139,7 +131,7 @@ class MCPMultiAgentOrchestrator:
             }
             for tool_name in mcp_tools
         ]
-        
+
         # Create agent in Azure AI Foundry
         agent = self.ai_client.agents.create_agent(
             model=model,
@@ -162,19 +154,19 @@ MCP Server Endpoint: {self.mcp_endpoint}
 """,
             tools=tools
         )
-        
+
         self.agents[name] = agent.id
         print(f"Created agent: {name} (ID: {agent.id})")
         return agent.id
-    
+
     async def route_request(self, user_message: str) -> dict:
         """
         Route user request to appropriate agent(s)
         Implements intent classification and handoff planning
-        
+
         Args:
             user_message: User's natural language request
-        
+
         Returns:
             Orchestration plan with agent sequence
         """
@@ -199,17 +191,17 @@ Respond in JSON format:
     ]
 }}
 """
-        
+
         # Call routing model (lightweight GPT-4o-mini)
         response = self.ai_client.inference.get_chat_completions(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": routing_prompt}]
         )
-        
+
         import json
         routing_plan = json.loads(response.choices[0].message.content)
         return routing_plan
-    
+
     async def execute_agent_chain(
         self,
         user_message: str,
@@ -217,68 +209,68 @@ Respond in JSON format:
     ) -> str:
         """
         Execute multi-agent workflow with handoffs
-        
+
         Args:
             user_message: Original user request
             agent_sequence: Ordered list of agent names
-        
+
         Returns:
             Final aggregated response
         """
         context = user_message
         results = []
-        
+
         for i, agent_name in enumerate(agent_sequence):
             agent_id = self.agents.get(agent_name)
             if not agent_id:
                 continue
-            
+
             # Create thread for this agent
             thread = self.ai_client.agents.create_thread()
-            
+
             # Add message
             self.ai_client.agents.create_message(
                 thread_id=thread.id,
                 role="user",
                 content=context
             )
-            
+
             # Run agent
             run = self.ai_client.agents.create_run(
                 thread_id=thread.id,
                 assistant_id=agent_id
             )
-            
+
             # Wait for completion
             while run.status in ["queued", "in_progress", "requires_action"]:
                 run = self.ai_client.agents.get_run(
                     thread_id=thread.id,
                     run_id=run.id
                 )
-                
+
                 # Handle tool calls (MCP integration)
                 if run.status == "requires_action":
                     tool_outputs = await self._handle_mcp_tool_calls(
                         run.required_action.submit_tool_outputs.tool_calls
                     )
-                    
+
                     run = self.ai_client.agents.submit_tool_outputs(
                         thread_id=thread.id,
                         run_id=run.id,
                         tool_outputs=tool_outputs
                     )
-                
+
                 await asyncio.sleep(0.5)
-            
+
             # Get agent response
             messages = self.ai_client.agents.list_messages(thread_id=thread.id)
             agent_response = messages.data[0].content[0].text.value
-            
+
             results.append({
                 "agent": agent_name,
                 "response": agent_response
             })
-            
+
             # Update context for next agent
             if i < len(agent_sequence) - 1:
                 context = f"""Previous agent ({agent_name}) response:
@@ -286,32 +278,32 @@ Respond in JSON format:
 
 Original request: {user_message}
 Continue the workflow."""
-        
+
         return self._aggregate_results(results)
-    
+
     async def _handle_mcp_tool_calls(self, tool_calls):
         """Execute MCP tools and return results"""
         import httpx
-        
+
         outputs = []
         async with httpx.AsyncClient() as client:
             for tool_call in tool_calls:
                 tool_name = tool_call.function.name
                 args = json.loads(tool_call.function.arguments)
-                
+
                 # Call MCP server
                 response = await client.post(
                     f"{self.mcp_endpoint}/mcp/tools/{tool_name}",
                     json={"arguments": args["arguments"]}
                 )
-                
+
                 outputs.append({
                     "tool_call_id": tool_call.id,
                     "output": response.text
                 })
-        
+
         return outputs
-    
+
     def _aggregate_results(self, results: list[dict]) -> str:
         """Combine multi-agent results into coherent response"""
         aggregated = "Multi-Agent Response:\n\n"
@@ -328,7 +320,7 @@ async def main():
         resource_group=os.getenv("AZURE_RESOURCE_GROUP"),
         project_name=os.getenv("AI_FOUNDRY_PROJECT")
     )
-    
+
     # Create specialized agents
     orchestrator.create_agent(
         name="HealthcareSpecialist",
@@ -337,7 +329,7 @@ async def main():
         and clinical research tasks. Use MCP tools to access Cosmos DB and AI Search.""",
         mcp_tools=["cosmos_query_items", "search_documents", "search_semantic"]
     )
-    
+
     orchestrator.create_agent(
         name="DiagnosticAssistant",
         role="AI Medical Diagnostic Helper",
@@ -345,7 +337,7 @@ async def main():
         You work with data from other agents to provide diagnostic support.""",
         mcp_tools=["openai_chat_completion"]
     )
-    
+
     orchestrator.create_agent(
         name="ComplianceMonitor",
         role="Healthcare Compliance Officer",
@@ -353,21 +345,21 @@ async def main():
         data access permissions.""",
         mcp_tools=["cosmos_query_items"]
     )
-    
+
     # Execute multi-agent workflow
     user_request = """Find all diabetic patients with recent lab results,
     generate a clinical summary, and verify compliance with data access policies."""
-    
+
     # Route request
     routing_plan = await orchestrator.route_request(user_request)
     print(f"Routing Plan: {routing_plan}")
-    
+
     # Execute agent chain
     result = await orchestrator.execute_agent_chain(
         user_message=user_request,
         agent_sequence=routing_plan["agent_sequence"]
     )
-    
+
     print(f"\nFinal Result:\n{result}")
 
 if __name__ == "__main__":
@@ -379,7 +371,7 @@ if __name__ == "__main__":
 
 ## Industry-Specific Multi-Agent Setups
 
-<details>
+<details markdown="1">
 <summary><strong>Healthcare Example</strong></summary>
 
 ```python
@@ -391,21 +383,21 @@ agents = {
         instructions="Route patient queries to appropriate specialists",
         mcp_tools=["search_semantic"]
     ),
-    
+
     "Clinician": orchestrator.create_agent(
         name="ClinicalAgent",
         role="Clinical Data Specialist",
         instructions="Query patient records, medications, allergies, lab results",
         mcp_tools=["cosmos_query_items", "search_documents"]
     ),
-    
+
     "Researcher": orchestrator.create_agent(
         name="ResearchAgent",
         role="Medical Research Assistant",
         instructions="Analyze patient populations, identify patterns",
         mcp_tools=["search_semantic", "openai_chat_completion"]
     ),
-    
+
     "Coordinator": orchestrator.create_agent(
         name="CareCoordinator",
         role="Patient Care Coordinator",
@@ -417,7 +409,7 @@ agents = {
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Retail Example</strong></summary>
 
 ```python
@@ -429,21 +421,21 @@ agents = {
         instructions="Search inventory, check availability, provide product details",
         mcp_tools=["search_documents", "cosmos_query_items"]
     ),
-    
+
     "RecommendationEngine": orchestrator.create_agent(
         name="RecommendationAgent",
         role="AI Product Recommender",
         instructions="Generate personalized product recommendations",
         mcp_tools=["search_semantic", "openai_chat_completion"]
     ),
-    
+
     "LoyaltyManager": orchestrator.create_agent(
         name="LoyaltyAgent",
         role="Customer Loyalty Specialist",
         instructions="Check points, apply discounts, manage rewards",
         mcp_tools=["cosmos_query_items"]
     ),
-    
+
     "CartManager": orchestrator.create_agent(
         name="CartAgent",
         role="Shopping Cart Manager",
@@ -463,45 +455,45 @@ class ModelRouter:
     Route requests to optimal models based on complexity and cost
     Inspired by Agentic-DevOps-AI-Shopping example
     """
-    
+
     def __init__(self):
         self.models = {
             "simple": "gpt-4o-mini",      # Fast, cheap
             "complex": "gpt-4o",           # Powerful, expensive
             "embedding": "text-embedding-3-small"
         }
-    
+
     def select_model(self, request: str, agent_type: str) -> str:
         """
         Choose model based on request complexity
-        
+
         Args:
             request: User request text
             agent_type: Agent role (routing, execution, aggregation)
-        
+
         Returns:
             Model deployment name
         """
         # Simple routing/triage tasks → gpt-4o-mini
         if agent_type == "routing":
             return self.models["simple"]
-        
+
         # Complex reasoning/generation → gpt-4o
         if agent_type == "execution":
             if len(request) > 500 or "analyze" in request.lower():
                 return self.models["complex"]
             return self.models["simple"]
-        
+
         # Aggregation → gpt-4o-mini
         if agent_type == "aggregation":
             return self.models["simple"]
-        
+
         return self.models["simple"]
 ```
 
 ## Deployment to Azure
 
-<details>
+<details markdown="1">
 <summary><strong>1. Create Azure AI Foundry Project</strong></summary>
 
 ```bash
@@ -520,7 +512,7 @@ az ml workspace update \
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>2. Deploy Models</strong></summary>
 
 ```bash
@@ -539,7 +531,7 @@ az ml online-deployment create \
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>3. Configure MCP Connection</strong></summary>
 
 ```python
@@ -567,11 +559,4 @@ kv_client.set_secret("MCP-Endpoint", "https://your-mcp.azurecontainerapps.io")
 
 ## Complete Example
 
-> See [`/agent-samples/healthcare-multi-agent/`](../../agent-samples/healthcare-multi-agent/) for full implementation example.
-
-<!-- START BADGE -->
-<div align="center">
-  <img src="https://img.shields.io/badge/Total%20views-1283-limegreen" alt="Total views">
-  <p>Refresh Date: 2026-04-06</p>
-</div>
-<!-- END BADGE -->
+> See [`/agent-samples/healthcare-multi-agent/`](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/healthcare-multi-agent) for full implementation example.

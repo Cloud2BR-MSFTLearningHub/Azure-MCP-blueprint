@@ -1,15 +1,8 @@
 # Microsoft Copilot Studio Integration <br/> with MCP Server - Overview
 
-Costa Rica
-
-[![GitHub](https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff)](https://github.com/) [Cloud2BR OSS - Learning Hub](https://github.com/Cloud2BR-MSFTLearningHub)
-
-Last updated: 2026-03-09
-
-----------
 > Connect your MCP Server to Microsoft Copilot Studio to create low-code/no-code AI agents with enterprise data access. `Perfect for business users and citizen developers.`
 
-<details>
+<details markdown="1">
 <summary><strong>Table of contents</strong></summary>
 
 - [What You'll Build](#what-youll-build)
@@ -36,7 +29,7 @@ Last updated: 2026-03-09
 
 ## Quick Start
 
-<details>
+<details markdown="1">
 <summary><strong>Step 1: Access Copilot Studio</strong></summary>
 
 1. Navigate to [Copilot Studio](https://copilotstudio.microsoft.com/)
@@ -45,7 +38,7 @@ Last updated: 2026-03-09
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Step 2: Create New Copilot</strong></summary>
 
 1. Click **Create** → **New Copilot**
@@ -58,7 +51,7 @@ Last updated: 2026-03-09
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Step 3: Add MCP Server as Tool</strong></summary>
 
 > Option A (Recommended): MCP onboarding wizard:Copilot Studio supports connecting directly to an MCP server using the **Model Context Protocol** tool type.
@@ -70,12 +63,12 @@ Last updated: 2026-03-09
    - **Server URL**: `https://your-mcp.azurecontainerapps.io/mcp`
    - **Authentication**: None, API key, or OAuth 2.0
 
-> [!NOTE]
->
-> - Copilot Studio currently supports the **Streamable** transport type for MCP.
-> - This repo’s MCP server exposes a standards-based Streamable endpoint at `POST /mcp` (JSON-RPC).
+!!! note
 
-> Option B: Custom connector (MCP Streamable): If you need to manage the connection via Power Apps, create a custom connector using a minimal OpenAPI schema that points to `POST /mcp` and includes the MCP protocol marker.
+    - Copilot Studio currently supports the **Streamable** transport type for MCP.
+    - This repo’s MCP server exposes a standards-based Streamable endpoint at `POST /mcp` (JSON-RPC).
+
+    Option B: Custom connector (MCP Streamable): If you need to manage the connection via Power Apps, create a custom connector using a minimal OpenAPI schema that points to `POST /mcp` and includes the MCP protocol marker.
 
 ```yaml
 swagger: '2.0'
@@ -102,10 +95,10 @@ paths:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Step 4: Configure Topics with MCP Tools</strong></summary>
 
-> Example: Healthcare Patient Lookup
+    Example: Healthcare Patient Lookup
 
 1. Go to **Topics** tab
 2. Click **+ New topic** → **From blank**
@@ -149,10 +142,10 @@ Node 5: Question - Follow-up
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Step 5: Industry-Specific Topics</strong></summary>
 
-> Example topic mappings (Industry → Trigger → MCP tool call)
+    Example topic mappings (Industry → Trigger → MCP tool call)
 
 | Industry | Topic | Trigger phrase examples | MCP tool | Example action (tool → parameters/query) |
 |---|---|---|---|---|
@@ -165,10 +158,10 @@ Node 5: Question - Follow-up
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Step 6: Generative Answers (Optional)</strong></summary>
 
-> Publish to Demo Website: Enable generative responses powered by MCP data.
+    Publish to Demo Website: Enable generative responses powered by MCP data.
 
 1. Go to **Settings** → **Generative AI**
 2. Enable **Generative answers**
@@ -200,7 +193,7 @@ Always maintain data privacy and security.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Step 7: Test Your Copilot</strong></summary>
 
 1. Click **Test your copilot** (top right)
@@ -213,17 +206,17 @@ Always maintain data privacy and security.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Step 8: Publish</strong></summary>
 
-> Publish to Demo Website: 
+    Publish to Demo Website:
 
 1. Go to **Publish** tab
 2. Click **Publish**
 3. Select **Demo website**
 4. Share link: `https://your-copilot.powerapps.com/...`
 
-> Publish to Microsoft Teams:
+    Publish to Microsoft Teams:
 
 1. Go to **Publish** tab
 2. Click **Publish**
@@ -235,7 +228,7 @@ Always maintain data privacy and security.
 5. **Submit for approval** (if required)
 6. **Install in Teams**
 
-> Embed in Website: 
+    Embed in Website:
 
 ```html
 <!DOCTYPE html>
@@ -245,7 +238,7 @@ Always maintain data privacy and security.
 </head>
 <body>
     <h1>Healthcare AI Assistant</h1>
-    
+
     <!-- Copilot Studio Embed Code -->
     <div id="copilot-container"></div>
     <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
@@ -274,10 +267,10 @@ Always maintain data privacy and security.
 
 ## Advanced Features
 
-<details>
+<details markdown="1">
 <summary><strong>Authentication & Security</strong></summary>
 
-> Azure AD Authentication: 
+    Azure AD Authentication:
 
 1. In **Settings** → **Security**
 2. Enable **Authentication**
@@ -287,7 +280,7 @@ Always maintain data privacy and security.
    - Client ID
    - Redirect URI
 
-> Row-Level Security:
+    Row-Level Security:
 
 ```yaml
 # In MCP Server, implement user-scoped queries
@@ -299,7 +292,7 @@ def get_user_data(user_id: str, query: str):
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Analytics & Monitoring</strong></summary>
 
 1. Go to **Analytics** tab
@@ -313,7 +306,7 @@ def get_user_data(user_id: str, query: str):
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Multi-Language Support</strong></summary>
 
 1. **Settings** → **Languages**
@@ -327,7 +320,7 @@ def get_user_data(user_id: str, query: str):
 
 ## Industry Templates
 
-> Each row maps a user intent to a specific MCP tool call, what to pass, and what to show.
+    Each row maps a user intent to a specific MCP tool call, what to pass, and what to show.
 
 | Industry | Topics (deep dive) | Trigger phrases (examples) | MCP tools used | Example calls (shapes) | What to display back | Notes (design + safety) |
 |---|---|---|---|---|---|---|
@@ -335,8 +328,7 @@ def get_user_data(user_id: str, query: str):
 | Retail | - Product Search<br/>- Inventory Status<br/>- Order Tracking<br/>- Loyalty Points<br/>- Recommendations | - “Search headphones”, “Laptops under $1000”<br/>- “Is SKU {sku} in stock?”<br/>- “Track order {orderId}”<br/>- “My loyalty points”<br/>- “Recommend products like {productName}” | - `search_documents`<br/>- `cosmos_query_items`<br/>- `openai_chat_completion` | - Search: `{"query":"headphones","top":10,"filter":null}`<br/>- Cosmos: `{"query":"SELECT * FROM c WHERE c.transactionId = '{orderId}'"}`<br/>- Foundry: `{"messages":[...],"model":"gpt-4o"}` | - Product list (name/category/price if indexed)<br/>- Availability/stock fields (if present)<br/>- Order status + last update<br/>- Loyalty point balance<br/>- Short recommendation list | - Confirm identifier formats (orderId vs transactionId)<br/>- For recommendations: Search first (grounding) then summarize with Foundry<br/>- Minimize PII (use customerId, not email) |
 | Finance | - Account Balance<br/>- Transaction History<br/>- Fraud Alerts<br/>- Payment Processing<br/>- Financial Insights | - “Balance for account {accountId}”<br/>- “Transactions last 30 days”<br/>- “Suspicious activity?”<br/>- “Pay my bill / send $50”<br/>- “Spending insights” | - `cosmos_query_items`<br/>- `openai_chat_completion` | - Cosmos: `{"query":"SELECT * FROM c WHERE c.accountId = '{accountId}' AND c.timestamp >= '{isoDate}' ORDER BY c.timestamp DESC"}`<br/>- Fraud: `{"query":"SELECT * FROM c WHERE c.fraudScore > 0.7 ORDER BY c.fraudScore DESC"}`<br/>- Foundry: `{"messages":[...],"model":"gpt-4o"}` | - Balance + currency (if stored)<br/>- Recent transactions (amount/merchant/time)<br/>- Flagged transactions + fraudScore<br/>- Confirmation step for payments<br/>- Category insights + next steps | - Present fraud as a signal, not a final determination<br/>- Only simulate payments unless you have a real backend<br/>- Best pattern for insights: Cosmos query → Foundry summary |
 
-> [!IMPORTANT]
-> Template data is synthetic but can contain **PII-like fields** (names/emails/phones/addresses; DOB in some industries). Avoid logging tool outputs and apply least-privilege access.
+  **Important:** Template data is synthetic but can contain **PII-like fields** such as names, email addresses, phone numbers, addresses, and dates of birth. Avoid logging tool outputs and apply least-privilege access.
 
 | Operations area | Symptom / goal | What to check | Fix |
 |---|---|---|---|
@@ -349,15 +341,8 @@ def get_user_data(user_id: str, query: str):
 
 ## Sample Copilot Export
 
-> See [`/agent-samples/copilot-studio/`](../../agent-samples/copilot-studio/) for:
->
-> - Healthcare Assistant (.zip export)
-> - Retail Assistant (.zip export)
-> - Finance Assistant (.zip export)
+    See [`/agent-samples/copilot-studio/`](../../agent-samples/copilot-studio/) for:
 
-<!-- START BADGE -->
-<div align="center">
-  <img src="https://img.shields.io/badge/Total%20views-1283-limegreen" alt="Total views">
-  <p>Refresh Date: 2026-04-06</p>
-</div>
-<!-- END BADGE -->
+    - Healthcare Assistant (.zip export)
+    - Retail Assistant (.zip export)
+    - Finance Assistant (.zip export)

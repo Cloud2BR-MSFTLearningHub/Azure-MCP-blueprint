@@ -1,16 +1,8 @@
-# MCP (Model Context Protocol) <br/> Blueprint in Azure – Overview 
-
-Costa Rica
-
-[![GitHub](https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff)](https://github.com/) [Cloud2BR OSS - Learning Hub](https://github.com/Cloud2BR-MSFTLearningHub)
-
-Last updated: 2026-04-06
-
-----------
+# MCP (Model Context Protocol) <br/> Blueprint in Azure – Overview
 
 > MCP is about `structured behavior, access control, and responsibilities` from the AI's perspective, and we expose it (often via HTTP) using whatever hosting option fits best.
 
-<details>
+<details markdown="1">
 <summary><strong>List of References</strong></summary>
 
 - [Tutorial: Host an MCP server on Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-mcp-tutorial?tabs=mcp-extension&pivots=programming-language-python#remote-mcp-server-authorization)
@@ -18,7 +10,7 @@ Last updated: 2026-04-06
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><strong>Table of contents</strong></summary>
 
 - [What MCP Really Is?](#what-mcp-really-is)
@@ -34,23 +26,23 @@ Last updated: 2026-04-06
   <img width="700" src="https://github.com/user-attachments/assets/f215d752-4212-4b2a-a0df-7018ada9a607" alt="Centered Image" style="border: 2px solid #4CAF50; border-radius: 5px; padding: 5px;"/>
 </div>
 
-> [!TIP]
-> You can think of MCP as:
->
-> - **A universal API contract for AI agents.**  
-> - **A permissions framework** (AI can only do what's declared).  
-> - **A deployment‑agnostic service** (you choose where/how to host it).
-> - **An industry-ready demo** with 100K sample records and pre-configured queries
+!!! tip
+    You can think of MCP as:
 
-> [!IMPORTANT]
-> The deployment process typically takes 15-20 minutes
->
-> 1. Adjust [terraform.tfvars](./terraform-infrastructure/terraform.tfvars) values 
-> 2. Initialize terraform with `terraform init`. Click here to [understand more about the deployment process](./terraform-infrastructure/README.md)
-> 3. Run `terraform apply`, you can also leverage `terraform apply -auto-approve`. 
+    - **A universal API contract for AI agents.**
+    - **A permissions framework** (AI can only do what's declared).
+    - **A deployment‑agnostic service** (you choose where/how to host it).
+    - **An industry-ready demo** with 100K sample records and pre-configured queries
 
-> [!NOTE]
-> Configuration Options: Customize, and choose your hosting service by editing [terraform.tfvars](./terraform-infrastructure/terraform.tfvars).
+!!! warning
+    The deployment process typically takes 15-20 minutes.
+
+    1. Adjust [terraform.tfvars](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/blob/main/terraform-infrastructure/terraform.tfvars) values
+    2. Initialize Terraform with `terraform init`. [Read the Terraform infrastructure guide](terraform.md).
+    3. Run `terraform apply`, you can also leverage `terraform apply -auto-approve`.
+
+!!! note
+    Configuration Options: Customize, and choose your hosting service by editing [terraform.tfvars](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/blob/main/terraform-infrastructure/terraform.tfvars).
 
 ```hcl
 # Choose your industry template
@@ -62,7 +54,7 @@ mcp_deployment_type = "container-app"  # Options: container-app, function, app-s
 
 ## What MCP Really Is?
 
-> **MCP (Model Context Protocol)** is a **structured contract** between an AI client (like Copilot Studio or Azure AI Foundry) and an external service (your MCP server).
+**MCP (Model Context Protocol)** is a **structured contract** between an AI client (like Copilot Studio or Azure AI Foundry) and an external service (your MCP server).
 
 <div align="center">
   <img width="700" src="https://github.com/user-attachments/assets/c49b002d-e367-4ee6-b0cf-62c413259e33" alt="Centered Image" style="border: 2px solid #4CAF50; border-radius: 5px; padding: 5px;"/>
@@ -70,41 +62,40 @@ mcp_deployment_type = "container-app"  # Options: container-app, function, app-s
 
 It defines:
 
-- **What tools exist** (functions the AI can call).  
-- **What inputs they require** (schemas).  
-- **What outputs they return** (structured JSON).  
-- **What resources are available** (read‑only context like docs, schemas, or files).  
-- **What prompts are predefined** (templates the AI can use).  
+- **What tools exist** (functions the AI can call).
+- **What inputs they require** (schemas).
+- **What outputs they return** (structured JSON).
+- **What resources are available** (read‑only context like docs, schemas, or files).
+- **What prompts are predefined** (templates the AI can use).
 
-> [!TIP]
-> Like a **set of rules and responsibilities** that tell the AI: `"Here’s what you’re allowed to do, here’s how you call it, and here’s what you’ll get back"`
+**Tip:** Think of MCP as a set of rules and responsibilities that tells the AI what it may call, how to call it, and what it receives.
 
-<details>
+<details markdown="1">
 <summary><b>Rights & Responsibilities </b> (Click to expand)</summary>
 
-> From the AI’s perspective:
+**From the AI’s perspective:**
 
-- **Rights:** It can only call the tools/resources the MCP server advertises.  
-- **Responsibilities:** It must respect the input/output schema and handle errors gracefully.  
-- **Boundaries:** The AI cannot `“invent”` new tools, it only uses what the MCP server exposes.  
+- **Rights:** It can only call the tools/resources the MCP server advertises.
+- **Responsibilities:** It must respect the input/output schema and handle errors gracefully.
+- **Boundaries:** The AI cannot `“invent”` new tools, it only uses what the MCP server exposes.
 
-> From developer perspective (as the server owner):
+**From the developer perspective (as the server owner):**
 
-- You decide **what to expose** (e.g., `getCustomerOrders`, `createInvoice`).  
-- You enforce **security and governance** (auth, rate limits, logging).  
-- You control **where it’s hosted** (local dev, Azure App Service, Container Apps, Functions, etc.).  
+- You decide **what to expose** (e.g., `getCustomerOrders`, `createInvoice`).
+- You enforce **security and governance** (auth, rate limits, logging).
+- You control **where it’s hosted** (local dev, Azure App Service, Container Apps, Functions, etc.).
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b> Transport Layer </b> (Click to expand)</summary>
 
-- MCP itself is **transport‑agnostic**, it can run over **stdio, WebSockets, or HTTP**.  
-- In practice, for Copilot Studio and Azure AI Foundry, you’ll usually expose it as an **HTTP(S) endpoint** so it’s accessible in the cloud.  
+- MCP itself is **transport‑agnostic**, it can run over **stdio, WebSockets, or HTTP**.
+- In practice, for Copilot Studio and Azure AI Foundry, you’ll usually expose it as an **HTTP(S) endpoint** so it’s accessible in the cloud.
 - That's why you see multiple hosting options:
-  - **Local dev** → run on your laptop, expose via a dev tunnel.  
-  - **Azure App Service / Container Apps** → production‑ready, scalable.  
-  - **Azure Functions** → serverless, event‑driven.  
+  - **Local dev** → run on your laptop, expose via a dev tunnel.
+  - **Azure App Service / Container Apps** → production‑ready, scalable.
+  - **Azure Functions** → serverless, event‑driven.
 
 </details>
 
@@ -117,10 +108,10 @@ Terraform provisions:
 3. **If** `mcp_deployment_type = "container-app"` and automation is enabled, builds the MCP server image **in Azure using ACR Tasks** and deploys it to Azure Container Apps
 4. Returns the MCP endpoint URL as a Terraform output
 
-<details>
+<details markdown="1">
 <summary><b> Verify Deployment </b> (Click to expand)</summary>
 
-> After `terraform apply`, use the `mcp_endpoint` output. For example:
+    After `terraform apply`, use the `mcp_endpoint` output. For example:
 
 ```bash
 cd terraform-infrastructure
@@ -129,7 +120,7 @@ terraform output mcp_endpoint
 
 <img width="1911" height="907" alt="image" src="https://github.com/user-attachments/assets/872c8647-4fc9-4d95-8393-76e3f371eea7" />
 
-> Then test:
+    Then test:
 
 ```bash
 curl -s "$(terraform output -raw mcp_endpoint)/health"
@@ -158,7 +149,7 @@ curl -s "$(terraform output -raw mcp_endpoint)/mcp" -H "Content-Type: applicatio
 
 <img width="1924" height="1136" alt="image" src="https://github.com/user-attachments/assets/58dc1448-ff18-4d07-a01c-9205773b2c91" />
 
-> Code samples you can run against the endpoint:
+    Code samples you can run against the endpoint:
 
 - `samples/mcp-http-client/`
 - `agent-samples/`
@@ -175,10 +166,10 @@ Each template includes:
 - **Tailored Cosmos DB schema**
 - **Optimized AI Search index**
 
-<details>
+<details markdown="1">
 <summary><b>Healthcare</b> (Click to expand)</summary>
 
-> E.g. Medical records management, patient data search, clinical research
+    E.g. Medical records management, patient data search, clinical research
 
 **Sample Queries**:
 
@@ -204,10 +195,10 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Retail & E-Commerce</b> (Click to expand)</summary>
 
-> Product catalog management, transaction analytics, customer insights
+    Product catalog management, transaction analytics, customer insights
 
 **Sample Queries**:
 
@@ -233,10 +224,10 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Financial Services</b> (Click to expand)</summary>
 
-> Transaction monitoring, fraud detection, customer account management
+    Transaction monitoring, fraud detection, customer account management
 
 **Sample Queries**:
 
@@ -263,10 +254,10 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Manufacturing & IoT</b> (Click to expand)</summary>
 
-> Equipment monitoring, predictive maintenance, production optimization
+    Equipment monitoring, predictive maintenance, production optimization
 
 **Sample Queries**:
 
@@ -294,10 +285,10 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Education & Learning</b> (Click to expand)</summary>
 
-> Student records, academic analytics, enrollment management
+    Student records, academic analytics, enrollment management
 
 **Sample Queries**:
 
@@ -325,10 +316,10 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Logistics & Supply Chain</b> (Click to expand)</summary>
 
-> Shipment tracking, inventory management, delivery optimization
+    Shipment tracking, inventory management, delivery optimization
 
 **Sample Queries**:
 
@@ -357,10 +348,10 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Insurance & Claims</b> (Click to expand)</summary>
 
-> Claims processing, fraud detection, policy management
+    Claims processing, fraud detection, policy management
 
 **Sample Queries**:
 
@@ -389,10 +380,10 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Hospitality & Tourism</b> (Click to expand)</summary>
 
-> Hotel reservations, guest management, service optimization
+    Hotel reservations, guest management, service optimization
 
 **Sample Queries**:
 
@@ -422,10 +413,10 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Energy & Utilities</b> (Click to expand)</summary>
 
-> Smart grid monitoring, energy consumption analytics, utility management
+    Smart grid monitoring, energy consumption analytics, utility management
 
 **Sample Queries**:
 
@@ -455,10 +446,10 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Real Estate & Property</b> (Click to expand)</summary>
 
-> Property listings, sales tracking, portfolio management
+    Property listings, sales tracking, portfolio management
 
 **Sample Queries**:
 
@@ -491,21 +482,21 @@ Each template includes:
 
 ## Features
 
-> - Multi-agent orchestration
-> - Model router (gpt-4o vs gpt-4o-mini optimization)
-> - Intent classification & handoffs
-> - Agent specialization patterns
-> - Cost optimization strategies
+    - Multi-agent orchestration
+    - Model router (gpt-4o vs gpt-4o-mini optimization)
+    - Intent classification & handoffs
+    - Agent specialization patterns
+    - Cost optimization strategies
 
-<details>
+<details markdown="1">
 <summary><b>Option 1: Custom Applications (Developers)</b> (Click to expand)</summary>
 
-> Build AI-powered applications with direct MCP SDK integration.
+Build AI-powered applications with direct MCP SDK integration.
 
-> [!TIP]
->
-> - **Perfect for**: Custom web apps, mobile apps, enterprise systems
-> - **Guide**: [Custom App Integration](docs/integration-guides/custom-app-integration.md)
+**Tip**
+
+    - **Perfect for**: Custom web apps, mobile apps, enterprise systems
+    - **Guide**: [Custom App Integration](/integration-guides/custom-app-integration/)
 
 **Features**:
 
@@ -517,15 +508,15 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Option 2: Azure AI Foundry (Data Scientists)</b> (Click to expand)</summary>
 
-> Create sophisticated multi-agent systems with model routing.
+Create sophisticated multi-agent systems with model routing.
 
-> [!TIP]
->
-> - **Perfect for**: Complex AI workflows, multi-agent orchestration, advanced reasoning
-> - **Guide**: [Azure AI Foundry Integration](docs/integration-guides/azure-ai-foundry-integration.md)
+**Tip**
+
+    - **Perfect for**: Complex AI workflows, multi-agent orchestration, advanced reasoning
+    - **Guide**: [Azure AI Foundry Integration](/integration-guides/azure-ai-foundry-integration/)
 
 **Features**:
 
@@ -537,15 +528,15 @@ Each template includes:
 
 </details>
 
-<details>
+<details markdown="1">
 <summary><b>Option 3: Copilot Studio (Business Users)</b> (Click to expand)</summary>
 
-> Low-code/no-code AI chatbots with enterprise data access.
+Low-code/no-code AI chatbots with enterprise data access.
 
-> [!TIP]
->
-> - **Perfect for**: Teams deployment, customer service bots, internal tools
-> - **Guide**: [Copilot Studio Integration](docs/integration-guides/copilot-studio-integration.md)
+**Tip**
+
+    - **Perfect for**: Teams deployment, customer service bots, internal tools
+    - **Guide**: [Copilot Studio Integration](/integration-guides/copilot-studio-integration/)
 
 **Features**:
 
@@ -559,24 +550,24 @@ Each template includes:
 
 ## Pre-Built AI Agent Samples
 
-> Production-ready multi-agent implementations with model routing:
+Production-ready multi-agent implementations with model routing:
 
 | Sample | Industry | Agents | Complexity |
 |--------|----------|---------|------------|
-| [Healthcare Multi-Agent](agent-samples/healthcare-multi-agent/) | Healthcare | 5 | Advanced |
-| [Retail Shopping Assistant](agent-samples/retail-shopping-assistant/) | Retail | 6 | Advanced |
-| [Financial Advisor](agent-samples/financial-advisor/) | Finance | 4 | Intermediate |
-| [Manufacturing Monitor](agent-samples/manufacturing-monitor/) | Manufacturing | 3 | Intermediate |
-| [Education Student Assistant](agent-samples/education-student-assistant/) | Education | 3 | Intermediate |
-| [Logistics Tracker](agent-samples/logistics-tracker/) | Logistics | 3 | Intermediate |
-| [Insurance Claims Agent](agent-samples/insurance-claims-agent/) | Insurance | 4 | Intermediate |
-| [Hospitality Concierge](agent-samples/hospitality-concierge/) | Hospitality | 3 | Intermediate |
-| [Energy Usage Advisor](agent-samples/energy-usage-advisor/) | Energy | 3 | Intermediate |
-| [Real Estate Portfolio Manager](agent-samples/realestate-portfolio-manager/) | Real Estate | 3 | Intermediate |
+| [Healthcare Multi-Agent](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/healthcare-multi-agent) | Healthcare | 5 | Advanced |
+| [Retail Shopping Assistant](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/retail-shopping-assistant) | Retail | 6 | Advanced |
+| [Financial Advisor](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/financial-advisor) | Finance | 4 | Intermediate |
+| [Manufacturing Monitor](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/manufacturing-monitor) | Manufacturing | 3 | Intermediate |
+| [Education Student Assistant](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/education-student-assistant) | Education | 3 | Intermediate |
+| [Logistics Tracker](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/logistics-tracker) | Logistics | 3 | Intermediate |
+| [Insurance Claims Agent](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/insurance-claims-agent) | Insurance | 4 | Intermediate |
+| [Hospitality Concierge](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/hospitality-concierge) | Hospitality | 3 | Intermediate |
+| [Energy Usage Advisor](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/energy-usage-advisor) | Energy | 3 | Intermediate |
+| [Real Estate Portfolio Manager](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/realestate-portfolio-manager) | Real Estate | 3 | Intermediate |
 
 ## MCP Tools Available
 
-> Based on your selected industry and enabled services:
+    Based on your selected industry and enabled services:
 
 | Tool Name                | Description                                 | Category              |
 |--------------------------|---------------------------------------------|-----------------------|
@@ -587,10 +578,3 @@ Each template includes:
 | `search_semantic`        | AI-powered semantic search                  | Azure AI Search Tools |
 | `openai_chat_completion` | Chat completions (OpenAI-compatible)        | Foundry Tools         |
 | `openai_embeddings`      | Text embeddings (OpenAI-compatible)         | Foundry Tools         |
-
-<!-- START BADGE -->
-<div align="center">
-  <img src="https://img.shields.io/badge/Total%20views-1283-limegreen" alt="Total views">
-  <p>Refresh Date: 2026-04-06</p>
-</div>
-<!-- END BADGE -->
