@@ -341,8 +341,8 @@ def get_user_data(user_id: str, query: str):
 
 ## Sample Copilot Export
 
-    See [`/agent-samples/copilot-studio/`](../../agent-samples/copilot-studio/) for:
+See the [Copilot Studio sample exports in the source repository](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/tree/main/agent-samples/copilot-studio) for:
 
-    - Healthcare Assistant (.zip export)
-    - Retail Assistant (.zip export)
-    - Finance Assistant (.zip export)
+- Healthcare Assistant (.zip export)
+- Retail Assistant (.zip export)
+- Finance Assistant (.zip export)
