@@ -482,11 +482,11 @@ Each template includes:
 
 ## Features
 
-    - Multi-agent orchestration
-    - Model router (gpt-4o vs gpt-4o-mini optimization)
-    - Intent classification & handoffs
-    - Agent specialization patterns
-    - Cost optimization strategies
+- Multi-agent orchestration
+- Model router (gpt-4o vs gpt-4o-mini optimization)
+- Intent classification and handoffs
+- Agent specialization patterns
+- Cost optimization strategies
 
 <details markdown="1">
 <summary><b>Option 1: Custom Applications (Developers)</b> (Click to expand)</summary>
@@ -495,8 +495,8 @@ Build AI-powered applications with direct MCP SDK integration.
 
 **Tip**
 
-    - **Perfect for**: Custom web apps, mobile apps, enterprise systems
-    - **Guide**: [Custom App Integration](/integration-guides/custom-app-integration/)
+- **Perfect for**: Custom web apps, mobile apps, and enterprise systems
+- **Guide**: [Custom App Integration](integration-guides/custom-app-integration.md)
 
 **Features**:
 
@@ -515,8 +515,8 @@ Create sophisticated multi-agent systems with model routing.
 
 **Tip**
 
-    - **Perfect for**: Complex AI workflows, multi-agent orchestration, advanced reasoning
-    - **Guide**: [Azure AI Foundry Integration](/integration-guides/azure-ai-foundry-integration/)
+- **Perfect for**: Complex AI workflows, multi-agent orchestration, and advanced reasoning
+- **Guide**: [Azure AI Foundry Integration](integration-guides/azure-ai-foundry-integration.md)
 
 **Features**:
 
@@ -535,8 +535,8 @@ Low-code/no-code AI chatbots with enterprise data access.
 
 **Tip**
 
-    - **Perfect for**: Teams deployment, customer service bots, internal tools
-    - **Guide**: [Copilot Studio Integration](/integration-guides/copilot-studio-integration/)
+- **Perfect for**: Teams deployment, customer service bots, and internal tools
+- **Guide**: [Copilot Studio Integration](integration-guides/copilot-studio-integration.md)
 
 **Features**:
 
