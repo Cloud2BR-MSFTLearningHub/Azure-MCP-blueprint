@@ -567,7 +567,7 @@ Production-ready multi-agent implementations with model routing:
 
 ## MCP Tools Available
 
-    Based on your selected industry and enabled services:
+The available tools depend on your selected industry and enabled Azure services.
 
 | Tool Name                | Description                                 | Category              |
 |--------------------------|---------------------------------------------|-----------------------|
