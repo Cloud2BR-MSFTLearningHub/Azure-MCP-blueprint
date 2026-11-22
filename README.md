@@ -26,23 +26,23 @@
   <img width="700" src="https://github.com/user-attachments/assets/f215d752-4212-4b2a-a0df-7018ada9a607" alt="Centered Image" style="border: 2px solid #4CAF50; border-radius: 5px; padding: 5px;"/>
 </div>
 
-!!! tip
-    You can think of MCP as:
+> **Tip:**
+> You can think of MCP as:
+>
+> - **A universal API contract for AI agents.**
+> - **A permissions framework** (AI can only do what's declared).
+> - **A deployment‑agnostic service** (you choose where/how to host it).
+> - **An industry-ready demo** with 100K sample records and pre-configured queries
 
-    - **A universal API contract for AI agents.**
-    - **A permissions framework** (AI can only do what's declared).
-    - **A deployment‑agnostic service** (you choose where/how to host it).
-    - **An industry-ready demo** with 100K sample records and pre-configured queries
+> **Warning:**
+> The deployment process typically takes 15-20 minutes.
+>
+> 1. Adjust [terraform.tfvars](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/blob/main/terraform-infrastructure/terraform.tfvars) values
+> 2. Initialize Terraform with `terraform init`. [Read the Terraform infrastructure guide](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/terraform/).
+> 3. Run `terraform apply`, you can also leverage `terraform apply -auto-approve`.
 
-!!! warning
-    The deployment process typically takes 15-20 minutes.
-
-    1. Adjust [terraform.tfvars](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/blob/main/terraform-infrastructure/terraform.tfvars) values
-    2. Initialize Terraform with `terraform init`. [Read the Terraform infrastructure guide](terraform.md).
-    3. Run `terraform apply`, you can also leverage `terraform apply -auto-approve`.
-
-!!! note
-    Configuration Options: Customize, and choose your hosting service by editing [terraform.tfvars](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/blob/main/terraform-infrastructure/terraform.tfvars).
+> **Note:**
+> Configuration Options: Customize, and choose your hosting service by editing [terraform.tfvars](https://github.com/Cloud2BR-MSFTLearningHub/Azure-MCP-blueprint/blob/main/terraform-infrastructure/terraform.tfvars).
 
 ```hcl
 # Choose your industry template
@@ -496,7 +496,7 @@ Build AI-powered applications with direct MCP SDK integration.
 **Tip**
 
 - **Perfect for**: Custom web apps, mobile apps, and enterprise systems
-- **Guide**: [Custom App Integration](integration-guides/custom-app-integration.md)
+- **Guide**: [Custom App Integration](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/integration-guides/custom-app-integration/)
 
 **Features**:
 
@@ -516,7 +516,7 @@ Create sophisticated multi-agent systems with model routing.
 **Tip**
 
 - **Perfect for**: Complex AI workflows, multi-agent orchestration, and advanced reasoning
-- **Guide**: [Azure AI Foundry Integration](integration-guides/azure-ai-foundry-integration.md)
+- **Guide**: [Azure AI Foundry Integration](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/integration-guides/azure-ai-foundry-integration/)
 
 **Features**:
 
@@ -536,7 +536,7 @@ Low-code/no-code AI chatbots with enterprise data access.
 **Tip**
 
 - **Perfect for**: Teams deployment, customer service bots, and internal tools
-- **Guide**: [Copilot Studio Integration](integration-guides/copilot-studio-integration.md)
+- **Guide**: [Copilot Studio Integration](https://cloud2br-msftlearninghub.github.io/Azure-MCP-blueprint/integration-guides/copilot-studio-integration/)
 
 **Features**:
 
